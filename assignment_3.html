@@ -5,27 +5,96 @@
         <title> Assignment 3</title>
 
         <script>
+            let people = []
+            let person = []
+
+
+
+                function onlyOne(checkbox) {
+                    var checkboxes = document.getElementsByName('messageCheckbox')
+                        checkboxes.forEach((item) => {
+                        if (item !== checkbox) item.checked = false
+                            })
+                        }
+                function confirmInput() {
+                    let count = 0
+                    var dayOfBirth = document.forms[0].birthDate.value.substring(0,2);
+                    var monthOfBirth = document.forms[0].birthDate.value.substring(3, 5);
+                    var yearOfBirth = document.forms[0].birthDate.value.substring(6,10);
+                    const userBirthday = new Date(`${monthOfBirth} ${dayOfBirth}, ${yearOfBirth}`);
             
-        </script>
+           
+            if (isNaN(userBirthday.getTime())) {
+                alert("Date of Birth is not entered Correctly")
+            }
+
+
+            SubmitData = [document.getElementById('firstname').value,document.forms[0].surname.value,document.getElementById("male").checked,document.getElementById("female").checked,userBirthday,document.forms[0].postCode.value,
+            document.getElementById('employment-status-dropdown').value,document.getElementById('desired-employment-status-dropdown').value]
+              
+            for (let i=0; i < SubmitData.length; i++){ 
+                let value = SubmitData[i]
+
+                if (value.length == 0 && i==0){
+                    alert("Given Name cant be empty") 
+                    person = []
+                }
+                if (value.length == 0 && i==1){
+                    alert("Surname cant be empty") 
+                    person = []
+                }
+
+                if (value == false) {
+                    count++
+                }
+                if (count == 2){
+                    alert("You Must select A gender")  
+                    person = []  
+                break
+                }
+                person.push(value) 
+
+                if (person.length == 8) {
+                   addPersonToPeople(person) 
+                
+                }          
+            }
+
+            function addPersonToPeople(data) {
+                people.push(data)
+                person = [] 
+            }
+            console.log(people)
+            console.log(person)
+        }
+        
+
+        </script> 
 
     </head>
 
-
     <body>
         <h1>Input Person Details</h1>
+        <form>
             <div id="content">
-                <div id="names">
-                    <label>Given Name</label>
-                    <input type="text"/>
-                    <label>Surname</label>
-                    <input type="text" />
-                </div>
+                    <div id="names">
+                        <label>Given Name</label>
+                        <input required type="text" id="firstname"/>
+                        <label>Surname</label>
+                        <input required type="text" id="surname" />
+                    </div>
 
                 <label>Gender</label>
                 <div id="names">
-                    <input type="checkbox"/>
-                    <input type="checkbox"/>
+                    <input name="messageCheckbox" type="checkbox" id="male"/>
+                    <input name = "messageCheckbox"type="checkbox" id="female"/>
                 </div>
+
+                <label>Birth Date</label>
+                <input type="text" id="birthDate" />  
+                <label>Postcode</label>
+                <input required pattern="[0-9]+" size="4" type="text" maxlength="4" size="4" id="postCode"/>  
+
                 <label for="current-status">Current Employment Status</label>
                     <select id="employment-status-dropdown" name="current-status">
                         <option value="Full">Full</option>
@@ -33,13 +102,14 @@
                         <option value="Part">Part</option>
                     </select>
                 <label for="desired-status">Desired Employment Status</label>
-                    <select id="employment-status-dropdown" name="desired-status">
+                    <select id="desired-employment-status-dropdown" name="desired-status">
                         <option value="Full">Full</option>
                         <option value="None">None</option>
                         <option value="Part">Part</option>
                 </select>
 
-                <button id="button-style">Enter</button>
+                <input type="button" onclick="confirmInput()">
+            </form>
             </div>
 
         <h1>Results </h1>
