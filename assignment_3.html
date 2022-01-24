@@ -38,10 +38,12 @@
                 if (value.length == 0 && i==0){
                     alert("Given Name cant be empty") 
                     person = []
+                    break
                 }
                 if (value.length == 0 && i==1){
                     alert("Surname cant be empty") 
                     person = []
+                    break
                 }
 
                 if (value == false) {
@@ -50,6 +52,7 @@
                 if (count == 2){
                     alert("You Must select A gender")  
                     person = []  
+                    
                 break
                 }
                 person.push(value) 
@@ -66,8 +69,23 @@
             }
             console.log(people)
             console.log(person)
+
+            //THIS COULD BE USED FOR SECTION THREE
+            document.write("<table>") 
+            document.write("<tr><th>Last Name</th><th>First Name</th><th>Male</th><th>Female</th><th>Date of Birth</th><th>PostCode</th><th>Current</th><th>Desired</th></tr>")
+
+            // sorts through data and displays as a table row
+            for (let i = 0; i < people.length; i++) 
+            {   document.write('<tr>')
+                for(var j = 0; j < people[i].length; j++)
+                {   document.write(`<td>${(people[i][j])}</td>`)
+                }        
+            }
+            document.write('</tr>')
+            document.write("</table>") 
         }
         
+       
 
         </script> 
 
