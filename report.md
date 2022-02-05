@@ -1,23 +1,6 @@
-Test Plan
-
-
-
-
-
-
-
-
-
+# Test Plan
+something goes here
 Test Report
-
-
-
-
-
-
-
-
-
 Meeting Summary
 19.01.22 - Introductory Meeting
     - Discussed allocation of sections
@@ -26,7 +9,5 @@ Meeting Summary
         - Mal
             - Results Section
             - Report
-
-23.01.22 - 
-
+23.01.22
 31.01.22
