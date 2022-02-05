@@ -1,5 +1,5 @@
 # Test Plan
-something goes here
+Step 1.
 
 another something
 
