@@ -5,8 +5,8 @@
         <title> Assignment 3</title>
 
         <script>
-            let people = []
-            let person = []
+            let people = [];
+            let person = [];
 
 
 
@@ -32,7 +32,8 @@
             SubmitData = [document.getElementById('firstname').value,document.forms[0].surname.value,document.getElementById("male").checked,document.getElementById("female").checked,userBirthday,document.forms[0].postCode.value,
             document.getElementById('employment-status-dropdown').value,document.getElementById('desired-employment-status-dropdown').value]
               
-            for (let i=0; i < SubmitData.length; i++){ 
+            for (let i=0; i < SubmitData.length; i++)
+            { 
                 let value = SubmitData[i]
 
                 if (value.length == 0 && i==0){
@@ -67,8 +68,8 @@
                 people.push(data)
                 person = [] 
             }
-            console.log(people)
-            console.log(person)
+            //console.log(people)
+            //console.log(person)
 
             //THIS COULD BE USED FOR SECTION THREE
             document.write("<table>") 
@@ -85,6 +86,22 @@
             document.write("</table>") 
         }
         
+            function displayResults()
+            {
+                firstname = document.getElementById("firstname").value;
+                surname = document.getElementById("surname").value;
+                postCode = document.getElementById("postCode").value;
+                minAge =  document.getElementById("min_age").value;
+                currStatus = document.getElementById("employment-status-dropdown").value;
+                desStatus = document.getElementByID("desired-employment-status-dropdown").value;
+
+                document.write(firstname);
+                document.write(surname);
+                document.write(minAge);
+                document.write(postCode);
+                document.write(currStatus);
+                document.write(desStatus);
+            }
        
 
         </script> 
@@ -141,19 +158,20 @@
                         <option value="male and female">male and female</option>
                     </select>
 
-            <div id="names">
-                <label>Min Age</label>
+                <div id="names">
+                    <label>Min Age</label>
                     <input type="text" />  
 
-                <label>Max Age</label>
+                    <label>Max Age</label>
                     <input type="text" />  
-            </div>
+                </div>
 
-            <label>Postcode</label>
+                <label>Postcode</label>
                 <input type="text" />  
 
-            <button id="button-style">Show</button>
-        </div>
+                <button id="button-style">Show</button>
+                
+            </div>
 
 
 
@@ -192,7 +210,7 @@
                     <option value="descending">descending</option>
                 </select>
 
-        <button id="button-style">Show</button>
+        <button id="button-style" onclick="displayResults();">Display Results</button>
     </div>
         
 
