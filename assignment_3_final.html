@@ -1,0 +1,347 @@
+<Html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="assignment_3.css">
+        <title> Assignment 3</title>
+
+        <script>
+            /*
+                declaring arrays to store data inputed by the input section.
+                each element in the people array with be a person array
+            */
+            let people = []
+            let person = []
+            let gender = null
+            let counter = 0
+            let unemployed  = 0
+            let employed = 0
+            let underemployed = 0
+            let notInWorkforce = 0
+            let array = []
+            let filterArray =[]
+
+            /*
+                the onlyOne function ensures that only one textbox can be selected as 
+                the person is either female or male.
+            */
+                function onlyOne(checkbox) 
+                {   var checkboxes = document.getElementsByName('messageCheckbox')
+                    checkboxes.forEach((item) => 
+                    {   if (item !== checkbox) item.checked = false
+                    })
+                }
+
+            /*
+                the confirmInput function is called when the user clicks submit.
+            */
+            function confirmInput() 
+            {   // getting information from the users to date of birth so an object can be created
+                var dayOfBirth = document.forms[0].birthDate.value.substring(0,2);
+                var monthOfBirth = document.forms[0].birthDate.value.substring(3, 5);
+                var yearOfBirth = document.forms[0].birthDate.value.substring(6,10);
+                // using that data to create a user object
+                const userBirthday = new Date(`${monthOfBirth} ${dayOfBirth}, ${yearOfBirth}`);
+            
+                //checking if that user object is valid
+                if (isNaN(userBirthday.getTime())) 
+                {   person = []
+                    alert("Date of Birth is not entered Correctly")  
+                }
+
+                // document.getElementById("male").checked return true. So it needs to be converted to a string
+                if (document.getElementById("male").checked) 
+                {   gender = "male"
+                } 
+
+                // document.getElementById("female").checked return true. So it needs to be converted to a string
+                if (document.getElementById("female").checked)
+                {   gender = "female"
+                }
+            /*
+                the below code is the method by which data from 
+                the form is being retrieved. It is being stored
+                it an array.
+            */
+                let SubmitData = [document.getElementById('firstname').value,document.forms[0].surname.value,gender ,userBirthday,document.forms[0].postCode.value,
+                document.getElementById('employment-status-dropdown').value,document.getElementById('desired-employment-status-dropdown').value]
+              
+            // iterating over the above data to validate all fields. If it's valid push to person array
+                for (let i=0; i < SubmitData.length; i++)
+                {   let value = SubmitData[i]
+            
+                    if (value.length == 0 && i==0)
+                    {   alert("Given Name cant be empty") 
+                        person = []
+                    break
+                    }
+                    if (value.length == 0 && i==1)
+                    {   alert("Surname can't be empty") 
+                        person = []
+                    break
+                    }
+                    if (value.length == 0 && i==4)
+                    {   alert("Postcode Can't be empty") 
+                        person = []
+                        break
+                    }
+                        person.push(value) 
+                // if all data is valid push person to people array
+                    if (person.length == 7) 
+                    {   addPersonToPeople(person) 
+                
+                    }          
+                }
+            // this function pushes person to people array
+                function addPersonToPeople(data) 
+                {   people.push(data)
+                    person = [] 
+                }
+              
+            }
+
+        /*
+            the below function is used to get the age of the person from
+            there DOB object. It is used when filtering for age.
+        */
+        function getAge(birthDate) 
+        {   var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+            {   age--;
+            }
+            return age;
+        }
+
+        /*
+            the resultsPercentage function is called when the user clicks submit.
+            it calculates the percentage based upon predefined filters.
+        */
+        function resultsPercentage() 
+        {   let gender = 0
+            let SubmitData = [document.getElementById('results-employment-status-dropdown').value,document.getElementById('results-min-age').value, 
+            document.getElementById('results-max-age').value,document.getElementById('results-post-code').value]
+            for (let i = 0; i < people.length; i++) 
+            {   for(var j = 0; j < people[i].length; j++)
+                {   if (people[i][j] == SubmitData[0])
+                    {   array.push(people[i])
+                    } 
+                    if (people[i][j] == SubmitData[3]) 
+                    {   array.push(people[i])
+                    } 
+                    if ((typeof people[i][j] == 'object'&& (getAge(people[i][j]) > SubmitData[1] && getAge(people[i][j]) < SubmitData[2]))) 
+                    {   array.push(people[i])   
+                    }
+                    
+                }        
+            }
+                /*
+                    the code below tallies the rates of employment and
+                    calculates the percentage 
+                */
+
+                for (let i = 0; i < array.length; i++) 
+                {   for(var j = 0; j < array[i].length; j++)
+                    {   if (array[i][j] == "Nothing") 
+                    {   unemployed++
+                    }
+                    if (array[i][j] == "Fulltime") 
+                    {   employed++
+                    } 
+                    if (array[i][j] == "notinworkforce") 
+                    {   notInWorkforce++
+                    }   
+                    if (array[i][j] == "Partime") 
+                    {   underemployed++
+                    }   
+                    }       
+                
+                } 
+        }
+
+                /*
+                    the three functions below are used to display 
+                    the table for each section
+                */
+        function showTable()
+        {   var table =document.getElementById("jstable")
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            var cell7 = row.insertCell(6);
+            cell1.innerHTML = people[counter][0];
+            cell2.innerHTML = people[counter][1];
+            cell3.innerHTML = people[counter][2];
+            cell4.innerHTML = people[counter][3];
+            cell5.innerHTML = people[counter][4];
+            cell6.innerHTML = people[counter][5];
+            cell7.innerHTML = people[counter][6];
+            counter++
+        }
+
+        function showResults()
+        {   var table =document.getElementById("result-table")
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+
+            // used to calculate percentage 
+            cell1.innerHTML = employed *100/array.length +"%";
+            cell2.innerHTML = unemployed *100/array.length +"%";
+            cell3.innerHTML = underemployed *100/array.length +"%";
+            cell4.innerHTML = notInWorkforce *100/array.length +"%";
+        }
+
+        function showFilter()
+        {   var table =document.getElementById("filter-table")
+            var row = table.insertRow(0);
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = filterArray;
+            filterArray =[]  
+        }
+
+         //FILTER SECTION
+         function filterPeople() 
+         {  let SubmitData = [document.getElementById('firstName-filter').value,document.getElementById('secondName-filter').value, 
+            document.getElementById('gender-status-dropdown-filter').value,document.getElementById('min-age').value,document.getElementById('max-age').value,document.getElementById('filter-post').value,document.getElementById('order-by-dropdown').value]
+            // iterating over the above data to validate all fields. If not valid it wont push
+            for (let i = 0; i < people.length; i++) 
+                {   for(var j = 0; j < people[i].length; j++)
+                    {   if (people[i][j] == SubmitData[0])
+                        {   filterArray.push(people[i])   
+                        } 
+                        if (people[i][j] == SubmitData[1])
+                        {   filterArray.push(people[i])
+                        } 
+                        if (people[i][j] == SubmitData[2])
+                        {   filterArray.push(people[i])  
+                        } 
+                        if (people[i][j] == SubmitData[5]) 
+                        {   filterArray.push(people[i])
+                        } 
+                        if ((typeof people[i][j] == 'object'&& (getAge(people[i][j]) > SubmitData[3] && getAge(people[i][j]) < SubmitData[4]))) {
+                            filterArray.push(people[i])  
+                        }  
+                    
+                    }   
+                }
+        }
+        </script> 
+
+    </head>
+
+    <body>
+        <h1>Input Person Details</h1>
+        <form>
+            <div id="content">
+                    <div id="names">
+                        <label>Given Name</label>
+                        <input required type="text" id="firstname"/>
+                        <label>Surname</label>
+                        <input required type="text" id="surname" />
+                    </div>
+
+            <label>Gender</label>
+            <div id="names">
+                <label>male</label>
+                    <input name="messageCheckbox" type="checkbox" id="male"/>
+                <label>female</label>
+                    <input name = "messageCheckbox"type="checkbox" id="female"/>
+            </div>
+
+            <label>Birth Date</label>
+            <input type="text" id="birthDate" />  
+            <label>Postcode</label>
+            <input required pattern="[0-9]+" size="4" type="text" maxlength="4" size="4" id="postCode"/>  
+
+            <label for="current-status">Current Employment Status</label>
+                <select id="employment-status-dropdown" name="current-status">
+                    <option value="Fulltime">Full</option>
+                    <option value="Nothing">None</option>
+                    <option value="Partime">Part</option>
+                </select>
+            <label for="desired-status">Desired Employment Status</label>
+                <select id="desired-employment-status-dropdown" name="desired-status">
+                    <option value="Full">Full</option>
+                    <option value="None">None</option>
+                    <option value="Part">Part</option>
+                </select>
+
+            <input value="submit" type="button" onclick="confirmInput(); showTable();">
+                <table id=jstable>
+                    <tr><th>Last Name</th><th>First Name</th><th>Gender</th><th>Date of Birth</th><th>PostCode</th><th>Current</th><th>Desired</th></tr>
+                </table>
+            </form>
+            </div>
+
+        <h1>Results </h1>
+            <div id="content">
+                <label for="gender">Gender</label>
+                    <select id="results-employment-status-dropdown" name="gender">
+                        <option value="male">male</option>
+                        <option value="female">female</option>
+                        <option value="male and female">male and female</option>
+                    </select>
+            <div id="names">
+                <label>Min Age</label>
+                    <input type="text" id="results-min-age" />  
+                <label>Max Age</label>
+                    <input type="text" id="results-max-age" />  
+            </div>
+            <label>Postcode</label>
+                <input type="text" id="results-post-code" />  
+                <input value="submit" type="button" onclick="resultsPercentage(); showResults();">
+            <table id=result-table>
+                <tr><th>Employed</th><th>Unemployed</th><th>Underemployed</th><th>Not Working</th></tr>
+            </table>
+        </div>
+
+    <h1>Person's Details</h1>
+        <div id="content">
+            <h3>filtering</h3>
+                <div id="names">
+                    <label>Given Name</label>
+                        <input type="text" id='firstName-filter'/>
+                    <label>Surname</label>
+                        <input type="text" id='secondName-filter'/>
+                </div>
+
+                <label for="gender-details">Gender</label>
+                    <select id="gender-status-dropdown-filter" name="gender-details">
+                        <option value="male">male only</option>
+                        <option value="female">female only</option>
+                        <option value="both">male and female</option>
+                    </select>
+
+        <div id="names">
+            <label>Min Age</label>
+                <input type="text" id='min-age' />  
+
+            <label>Max Age</label>
+                <input type="text" id='max-age' />  
+        </div>
+
+        <label>Postcode</label>
+            <input type="text" id='filter-post' />  
+
+        <h3>Order By</h3>
+                <select id="order-by-dropdown" name="order">
+                    <option value="no particular order">no particular order</option>
+                    <option value="ascending">ascending</option>
+                    <option value="descending">descending</option>
+                </select>
+        <input value="submit" type="button" onclick='filterPeople(); showFilter();'>
+        <table id=filter-table>
+            <tr><th>Last Name</th><th>First Name</th><th>Gender</th><th>Date of Birth</th><th>PostCode</th><th>Current</th><th>Desired</th></tr>
+        </table>
+        
+    </div>
+        
+    </body>
+</Html>
